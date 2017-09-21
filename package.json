@@ -1,0 +1,21 @@
+{
+  "name": "@ingest/ingest-node-sdk",
+  "version": "0.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "lint": "standard ./**/*.js --verbose | snazzy",
+    "lint:fix": "standard --fix"
+  },
+  "devDependencies": {
+    "pre-commit": "^1.2.2",
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.3"
+  },
+  "dependencies": {
+    "request": "^2.82.0"
+  },
+  "pre-commit": [
+    "lint"
+  ]
+}
