@@ -50,9 +50,13 @@ describe('Resource Tests', () => {
   })
 
   describe('Resource:: getAll', () => {
-    it('Should ...', () => {
+    // it('Should setup callback if no headers are passed in', () => {
+    //   let resource = new Resource()
 
-    })
+    //   let passedInCallback = function(){}
+    //   resource.getAll(passedInCallback)
+
+    // })
   })
 
   describe('Resource:: getById', () => {
