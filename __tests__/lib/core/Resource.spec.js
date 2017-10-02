@@ -4,9 +4,6 @@ jest.mock('../../../lib/core/Request')
 const Resource = require('../../../lib/core/Resource');
 
 describe('Resource Tests', () => {
-  beforeEach(() => {
-    const resource = new Resource()
-  });
 
   describe('Resource::constructor', () => {
     it('Should have a config object upon creation', () => {
