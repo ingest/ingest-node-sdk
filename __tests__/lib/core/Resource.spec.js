@@ -1,10 +1,9 @@
 /* eslint-env jest */
 jest.mock('../../../lib/core/Request')
 
-const Resource = require('../../../lib/core/Resource');
+const Resource = require('../../../lib/core/Resource')
 
 describe('Resource Tests', () => {
-
   describe('Resource::constructor', () => {
     it('Should have a config object upon creation', () => {
       const resource = new Resource()
@@ -32,7 +31,6 @@ describe('Resource Tests', () => {
   })
 
   describe('Resource::_sendRequest', () => {
-
     it('Should return a success callback with the data', () => {
       let options = {
         pass: true,
@@ -41,11 +39,10 @@ describe('Resource Tests', () => {
         }
       }
       let resource = new Resource()
-      resource._sendRequest(options, function(err, res) {
+      resource._sendRequest(options, function (err, res) {
         expect(err).toBeNull()
         expect(res.test).toEqual('test')
       })
-
     })
 
     it('Should return an error callback', () => {
@@ -56,20 +53,13 @@ describe('Resource Tests', () => {
         }
       }
       let resource = new Resource()
-      resource._sendRequest(options, function(err, res) {
+      resource._sendRequest(options, function (err, res) {
         expect(res).toBeNull()
         expect(err.test).toEqual('error')
       })
-
     })
 
     it('Should return a promise', () => {
-      let options = {
-        pass: true,
-        data: {
-          test: 'test'
-        }
-      }
       let resource = new Resource()
       let result = resource._sendRequest()
       expect(result.then).toBeDefined()
@@ -80,7 +70,7 @@ describe('Resource Tests', () => {
     it('Should return an error callback with the passed in error message', () => {
       const resource = new Resource()
       let error = 'this is an error message'
-      resource._handleInputError(error, function(err, res){
+      resource._handleInputError(error, function (err, res) {
         expect(err).toEqual(error)
         expect(res).toBeNull()
       })
@@ -97,14 +87,14 @@ describe('Resource Tests', () => {
   describe('Resource:: getAll', () => {
     it('Should call _sendRequest if no headers are passed in', () => {
       let resource = new Resource()
-      resource.getAll(function(err, res){
+      resource.getAll(function (err, res) {
         expect(resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _sendRequest if null headers are passed in', () => {
       let resource = new Resource()
-      resource.getAll(null, function(err, res){
+      resource.getAll(null, function (err, res) {
         expect(resource._sendRequest).toHaveBeenCalled()
       })
     })
@@ -143,14 +133,14 @@ describe('Resource Tests', () => {
   describe('Resource:: getTrashed', () => {
     it('Should call _sendRequest if no headers are passed in', () => {
       let resource = new Resource()
-      resource.getTrashed(function(err, res){
+      resource.getTrashed(function (err, res) {
         expect(resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _sendRequest if null headers are passed in', () => {
       let resource = new Resource()
-      resource.getTrashed(null, function(err, res){
+      resource.getTrashed(null, function (err, res) {
         expect(resource._sendRequest).toHaveBeenCalled()
       })
     })
@@ -327,14 +317,14 @@ describe('Resource Tests', () => {
   describe('Resource:: search', () => {
     it('Should call _sendRequest if no headers are passed in', () => {
       let resource = new Resource()
-      resource.search('input', function(err, res){
+      resource.search('input', function (err, res) {
         expect(resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _sendRequest if null headers are passed in', () => {
       let resource = new Resource()
-      resource.search('input', null, function(err, res){
+      resource.search('input', null, function (err, res) {
         expect(resource._sendRequest).toHaveBeenCalled()
       })
     })
@@ -348,11 +338,10 @@ describe('Resource Tests', () => {
 
     it('Should call _handleInputError if no input is passed in', () => {
       let resource = new Resource()
-      resource.search(function(err, res){
+      resource.search(function (err, res) {
         expect(resource._sendRequest).toHaveBeenCalled()
       })
     })
-
   })
 
   describe('Resource:: count', () => {

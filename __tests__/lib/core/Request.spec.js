@@ -1,4 +1,4 @@
-const Request = require('../../../lib/core/Request')
+/* eslint-env jest */
 
 describe('Request Tests', () => {
   describe('Request::constructor', () => {
@@ -6,5 +6,4 @@ describe('Request Tests', () => {
       expect(true).toBeTruthy()
     })
   })
-
 })
