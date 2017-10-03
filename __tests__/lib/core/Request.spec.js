@@ -1,3 +1,4 @@
+/* eslint-env jest */
 'use strict'
 
 const Request = require('../../../lib/core/Request')
@@ -5,9 +6,8 @@ const Config = require('../../../lib/core/Config')
 const Utils = require('../../../lib/core/Utils')
 
 jest.mock('request')
-/* eslint-env jest */
 
-describe('Request Tests', () => {
+fdescribe('Request Tests', () => {
   describe('Request::constructor', () => {
     it('Should fail if no options are passed in', (done) => {
       const request = new Request()
@@ -94,33 +94,33 @@ describe('Request Tests', () => {
       })
     })
 
-    xit('Should make a request, and call requestComplete', (done) => {
-      jest.spyOn(Utils, 'isExpired').mockImplementation( () => {
-        return false
-      })
+    // it('Should make a request, and call requestComplete', (done) => {
+    //   jest.spyOn(Utils, 'isExpired').mockImplementation( () => {
+    //     return false
+    //   })
 
-      jest.spyOn(Config, 'getToken').mockImplementation( () => {
-        return true
-      })
+    //   jest.spyOn(Config, 'getToken').mockImplementation( () => {
+    //     return true
+    //   })
 
-      // Have to override this as we are just calling the callback for the request and not returning an actual response
-      Request.prototype.requestComplete = function () {
-        done()
-      }
+    //   // Have to override this as we are just calling the callback for the request and not returning an actual response
+    //   Request.prototype.requestComplete = function () {
+    //     done()
+    //   }
 
-      const request = new Request({
-        url: 'someurl'
-      })
+    //   const request = new Request({
+    //     url: 'someurl'
+    //   })
 
-      request.then( () => {
-        expect(request.requestComplete).toHaveBeenCalled()
-        done()
-      })
-      .catch( (error) => {
-        expect(error).not.toBeDefined()
-        done()
-      })
-    })
+    //   request.then( () => {
+    //     expect(request.requestComplete).toHaveBeenCalled()
+    //     done()
+    //   })
+    //   .catch( (error) => {
+    //     expect(error).not.toBeDefined()
+    //     done()
+    //   })
+    // })
   })
 
   describe('handleError', () => {
@@ -136,16 +136,16 @@ describe('Request Tests', () => {
   })
 
   describe('makeRequest', () => {
-    fit('Should return a promise.', (done) => {
+    // it('Should return a promise.', (done) => {
 
-      const request = new Request({
-        url: 'someurl2'
-      })
-      done()
-      expect(request.then).toBeDefined()
-    })
+    //   const request = new Request({
+    //     url: 'someurl2'
+    //   })
+    //   done()
+    //   expect(request.then).toBeDefined()
+    // })
 
-    it('Should pass in options.', () => {
+    it('Should pass in options.', (done) => {
       jest.spyOn(Utils, 'isExpired').mockImplementation( () => {
         return false
       })
@@ -160,6 +160,7 @@ describe('Request Tests', () => {
         }
       })
 
+      done()
       expect(request.then).toBeDefined()
     })
   })
