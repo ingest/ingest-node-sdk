@@ -1,4 +1,4 @@
-/* eslist-env jest */
+/* eslint-env jest */
 
 const Resource = require('../../../lib/core/Resource');
 

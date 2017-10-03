@@ -7,7 +7,7 @@
     "lint": "standard ./**/*.js --verbose | snazzy",
     "lint:fix": "standard --fix",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "jest": "^21.1.0",
