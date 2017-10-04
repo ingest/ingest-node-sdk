@@ -153,29 +153,6 @@ describe('Resource Tests', () => {
     })
   })
 
-  describe('Resource:: getThumbnails', () => {
-    it('Should call the error handler when no id is passed in', () => {
-      let resource = new Resource()
-      resource.getThumbnails().then(data => {
-        expect(resource._handleInputError).toHaveBeenCalled()
-      })
-    })
-
-    it('Should call the error handler when id is not a string', () => {
-      let resource = new Resource()
-      resource.getThumbnails({}).then(data => {
-        expect(resource._handleInputError).toHaveBeenCalled()
-      })
-    })
-
-    it('Should call _sendRequest when id is passed as a string', () => {
-      let resource = new Resource()
-      resource.getThumbnails('test').then(data => {
-        expect(resource._sendRequest).toHaveBeenCalled()
-      })
-    })
-  })
-
   describe('Resource:: add', () => {
     it('Should call the error handler when no resource is passed in', () => {
       let resource = new Resource()
