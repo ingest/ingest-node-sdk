@@ -6,7 +6,7 @@ const Inputs = require('../../../lib/resources/Inputs')
 
 describe('Inputs Tests', () => {
   describe('Inputs:: getAll', () => {
-    it('Should call send request when an input is added.', () => {
+    it('Should call send request if input is an object.', () => {
       let resource = Inputs
       let input = {}
 
@@ -23,7 +23,7 @@ describe('Inputs Tests', () => {
       })
     })
 
-    it('Should call sendRequest when an input and filter is added', () => {
+    it('Should call sendRequest when an input is an object and filter is passed in', () => {
       let resource = Inputs
 
       let input = {}
@@ -55,7 +55,7 @@ describe('Inputs Tests', () => {
       })
     })
 
-    it('Should pass in a filter ', () => {
+    it('Should call sendRequest if a filter is passed in.', () => {
       let resource = Inputs
       let id = 'someValue'
       let filter = [{
