@@ -6,11 +6,11 @@ const Profiles = require('../../../lib/resources/Profiles')
 
 describe('Profiles Tests', () => {
   describe('Profiles:: update', () => {
-    it('Should call send request if input is an object.', () => {
+    it('Should call send request if profile is an object.', () => {
       let resource = Profiles
-      let input = {}
+      let profile = {}
 
-      resource.update(input, function (err, res) {
+      resource.update(profile, function (err, res) {
         expect(resource._sendRequest).toHaveBeenCalled()
       })
     })
@@ -23,17 +23,17 @@ describe('Profiles Tests', () => {
       })
     })
 
-    it('Should call sendRequest when an input is an object and filter is passed in', () => {
-      let resource = Profiles
+    // it('Should call sendRequest when an input is an object and filter is passed in', () => {
+    //   let resource = Profiles
 
-      let input = {}
-      let filter = [{
-        someValue: 'someValue'
-      }]
+    //   let profile = {}
+    //   let filter = [{
+    //     someValue: 'someValue'
+    //   }]
 
-      resource.update(input, filter, function (err, res) {
-        expect(resource._sendRequest).toHaveBeenCalled()
-      })
-    })
+    //   resource.update(profile, filter, function (err, res) {
+    //     expect(resource._sendRequest).toHaveBeenCalled()
+    //   })
+    // })
   })
 })
