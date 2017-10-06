@@ -22,18 +22,5 @@ describe('Profiles Tests', () => {
         expect(resource._handleInputError).toHaveBeenCalled()
       })
     })
-
-    // it('Should call sendRequest when an input is an object and filter is passed in', () => {
-    //   let resource = Profiles
-
-    //   let profile = {}
-    //   let filter = [{
-    //     someValue: 'someValue'
-    //   }]
-
-    //   resource.update(profile, filter, function (err, res) {
-    //     expect(resource._sendRequest).toHaveBeenCalled()
-    //   })
-    // })
   })
 })
