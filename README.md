@@ -87,7 +87,7 @@ Sometimes, the results will be paginated. In order to access the next page, pass
 Parameter   | Description
 ---------  | -----------
 input      | The search term
-headers    | TAny headers you wish to send in object form
+headers    | Any headers you wish to send in object form
 callback?  | This is optional if following the callback approach. Callback parameters are error and data (error, data) => {}
 
 ```
@@ -256,7 +256,7 @@ Ingest.Videos.update(video, (error, data) => {
 
 ### Publishing videos
 
-This makes videos publically avaiable to anyone who has the video playback url
+This makes videos publicly available to anyone who has the video playback url
 
 Parameter   | Description
 ---------  | -----------
@@ -338,7 +338,7 @@ Sometimes, the results will be paginated. In order to access the next page, pass
 Parameter   | Description
 ---------  | -----------
 input      | The search term
-headers    | TAny headers you wish to send in object form
+headers    | Any headers you wish to send in object form
 filters     | A comma delimited string containing filters to match inputs against
 callback?  | This is optional if following the callback approach. Callback parameters are error and data (error, data) => {}
 
@@ -473,7 +473,7 @@ Sometimes, the results will be paginated. In order to access the next page, pass
 Parameter   | Description
 ---------  | -----------
 input      | The search term
-headers    | TAny headers you wish to send in object form
+headers    | Any headers you wish to send in object form
 callback?  | This is optional if following the callback approach. Callback parameters are error and data (error, data) => {}
 
 ```
@@ -845,7 +845,7 @@ Ingest.Livestreams.add(livestream, (error, data) => {
 
 ### Updating a Livestream
 
-Only the title is updateable.
+Only the title is updatable.
 
 Parameter   | Description
 ---------  | -----------
@@ -1352,7 +1352,7 @@ Ingest.Users.getCurrentUserInfo((error, data) => {
 
 ### Revoking Current User
 
-Revokes the current users authorization token
+Revokes the current user's authorization token
 
 Parameter   | Description
 ---------  | -----------
@@ -1370,11 +1370,11 @@ Ingest.Users.revokeCurrentUser((error, data) => {
 
 ### Update Users Roles
 
-You will only be able to update a users roles if you have valid permissions.
+You will only be able to update a user's roles if you have valid permissions.
 
 Parameter   | Description
 ---------  | -----------
-id         | The users id to modify roles for
+id         | The user's id to modify roles for
 roleIDs    | An array of role ids to be given to the user
 callback?  | This is optional if following the callback approach. Callback parameters are error and data (error, data) => {}
 
@@ -1390,12 +1390,12 @@ Ingest.Users.updateUserRoles(id, roleIDs, (error, data) => {
 
 
 ### Transfer User Authorship
-Transfers all of a users content to another user.
+Transfers all of a user's content to another user.
 
 Parameter   | Description
 ---------  | -----------
-originalID  | Original Users ID
-newID      | New Users ID
+originalID  | Original User's ID
+newID      | New User's ID
 callback?  | This is optional if following the callback approach. Callback parameters are error and data (error, data) => {}
 
 ```
