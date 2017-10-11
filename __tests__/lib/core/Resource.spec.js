@@ -7,7 +7,7 @@ describe('Resource Tests', () => {
   beforeEach(() => {
     this.resource = new Resource()
     this.spy = jest.spyOn(this.resource, '_sendRequest').mockImplementation(() => {
-      return false;
+      return false
     })
   })
 
@@ -69,7 +69,7 @@ describe('Resource Tests', () => {
     it('Should return a rejected promise with the passed in error message', () => {
       let error = 'this is an error message'
       let result = this.resource._handleInputError(error)
-      expect(typeof result.catch === "function").toBeTruthy()
+      expect(typeof result.catch === 'function').toBeTruthy()
       result.catch((err) => {
         expect(err).toEqual(error)
       })
@@ -180,7 +180,7 @@ describe('Resource Tests', () => {
 
     it('Should call _sendRequest when resource is passed as an object', () => {
       this.spy = jest.spyOn(this.resource, '_updateResource').mockImplementation(() => {
-        return false;
+        return false
       })
       this.resource.update({test: 'Test Object'})
       expect(this.resource._updateResource).toHaveBeenCalled()

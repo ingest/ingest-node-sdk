@@ -1,7 +1,6 @@
 /* eslint-env jest */
 jest.mock('../../../lib/core/Request')
 
-const Resource = require('../../../lib/core/Resource')
 const Videos = require('../../../lib/resources/Videos')
 
 describe('Videos Tests', () => {
@@ -194,5 +193,4 @@ describe('Videos Tests', () => {
       })
     })
   })
-
 })

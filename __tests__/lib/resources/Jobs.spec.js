@@ -1,7 +1,6 @@
 /* eslint-env jest */
 jest.mock('../../../lib/core/Request')
 
-const Resource = require('../../../lib/core/Resource')
 const Jobs = require('../../../lib/resources/Jobs')
 
 describe('Jobs Tests', () => {
@@ -18,10 +17,10 @@ describe('Jobs Tests', () => {
     it('Should call send request when a job is added.', () => {
       let job = {
         inputs: [
-          "test"
+          'test'
         ],
-        profile: "test",
-        video: "test"
+        profile: 'test',
+        video: 'test'
       }
       this.resource.add(job, (err, res) => {
         expect(this.resource._sendRequest).toHaveBeenCalled()
@@ -36,8 +35,6 @@ describe('Jobs Tests', () => {
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
-
-
   })
 
   describe('Jobs:: progress', () => {

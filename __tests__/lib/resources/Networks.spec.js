@@ -1,7 +1,6 @@
 /* eslint-env jest */
 jest.mock('../../../lib/core/Request')
 
-const Resource = require('../../../lib/core/Resource')
 const Networks = require('../../../lib/resources/Networks')
 
 describe('Networks Tests', () => {
@@ -119,8 +118,8 @@ describe('Networks Tests', () => {
   describe('Networks:: addSecureKey', () => {
     it('Should call _sendRequest if all params are valid', () => {
       let data = {
-        title: "test",
-        key: "key"
+        title: 'test',
+        key: 'key'
       }
       this.resource.addSecureKey('networkId', data, (err, res) => {
         expect(this.resource._sendRequest).toHaveBeenCalled()
@@ -145,7 +144,7 @@ describe('Networks Tests', () => {
 
     it('Should call _handleInputError if data.key is not a string', () => {
       let data = {
-        title: "test",
+        title: 'test',
         key: {}
       }
       jest.spyOn(this.resource, '_handleInputError')
@@ -195,8 +194,8 @@ describe('Networks Tests', () => {
   describe('Networks:: updateSecureKey', () => {
     it('Should call _sendRequest if all params are valid', () => {
       const data = {
-        id: "testId",
-        title: "title"
+        id: 'testId',
+        title: 'title'
       }
       this.resource.updateSecureKey('networkId', data, (err, res) => {
         expect(this.resource._sendRequest).toHaveBeenCalled()
@@ -223,7 +222,7 @@ describe('Networks Tests', () => {
       jest.spyOn(this.resource, '_handleInputError')
       const data = {
         id: {},
-        title: "title"
+        title: 'title'
       }
       this.resource.updateSecureKey('networkId', data, (err, res) => {
         expect(this.resource._handleInputError).toHaveBeenCalled()

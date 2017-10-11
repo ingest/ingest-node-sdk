@@ -1,7 +1,6 @@
 /* eslint-env jest */
 jest.mock('../../../lib/core/Request')
 
-const Resource = require('../../../lib/core/Resource')
 const Roles = require('../../../lib/resources/Roles')
 
 describe('Roles Tests', () => {
@@ -16,7 +15,6 @@ describe('Roles Tests', () => {
 
   describe('Roles:: update', () => {
     it('Should call send request if role is an object.', () => {
-      let resource = Roles
       let role = {}
 
       this.resource.update(role, (err, res) => {

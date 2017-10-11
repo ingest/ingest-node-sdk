@@ -1,7 +1,6 @@
 /* eslint-env jest */
 jest.mock('../../../lib/core/Request')
 
-const Resource = require('../../../lib/core/Resource')
 const Profiles = require('../../../lib/resources/Profiles')
 
 describe('Profiles Tests', () => {

@@ -1,7 +1,6 @@
 /* eslint-env jest */
 jest.mock('../../../lib/core/Request')
 
-const Resource = require('../../../lib/core/Resource')
 const Livestreams = require('../../../lib/resources/Livestreams')
 
 describe('Livestreams Tests', () => {
