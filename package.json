@@ -1,13 +1,25 @@
 {
-  "name": "ingest-node-sdk",
+  "name": "@ingest/ingest-node-sdk",
   "version": "0.0.0",
-  "description": "",
+  "description": "Node SDK for communicating with Ingest's REST API.",
   "main": "./lib/ingest.js",
-  "scripts": {
-    "lint": "standard ./**/*.js --verbose | snazzy",
-    "lint:fix": "standard --fix",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+  "author": "Ingest (https://www.ingest.io/)",
+  "homepage": "https://github.com/ingest/ingest-node-sdk",
+  "bugs": {
+    "url": "https://github.com/ingest/ingest-node-sdk/issues",
+    "email": "support@ingest.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ingest/ingest-node-sdk.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.11.3",
+    "npm": ">=3.10.10"
+  },
+  "dependencies": {
+    "request": "^2.82.0"
   },
   "devDependencies": {
     "jest": "^21.1.0",
@@ -15,12 +27,15 @@
     "snazzy": "^7.0.0",
     "standard": "^10.0.3"
   },
-  "dependencies": {
-    "request": "^2.82.0"
-  },
   "jest": {
     "collectCoverage": true,
     "verbose": true
+  },
+  "scripts": {
+    "lint": "standard ./**/*.js --verbose | snazzy",
+    "lint:fix": "standard --fix",
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "pre-commit": [
     "lint",
