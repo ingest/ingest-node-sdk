@@ -27,19 +27,18 @@ describe('Resource Tests', () => {
       })
     })
 
-    // it('Should return an error callback', () => {
-    //   let options = {
-    //     pass: true,
-    //     data: {
-    //       test: 'error'
-    //     }
-    //   }
-    //   this.resource._sendRequest(options, (err, res) => {
-    //     console.log(err)
-    //     expect(res).toBeNull()
-    //     expect(err).toEqual(options.data)
-    //   })
-    // })
+    it('Should return an error callback', () => {
+      let options = {
+        pass: false,
+        data: {
+          test: 'error'
+        }
+      }
+      this.resource._sendRequest(options, (err, res) => {
+        expect(res).toBeNull()
+        expect(err).toEqual(options.data)
+      })
+    })
 
     it('Should return a promise', () => {
       let options = {
