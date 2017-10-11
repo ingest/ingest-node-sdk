@@ -5,65 +5,65 @@ const Resource = require('../../../lib/core/Resource')
 const Inputs = require('../../../lib/resources/Inputs')
 
 describe('Inputs Tests', () => {
+  beforeEach(() => {
+    this.resource = Inputs
+    this.spy = jest.spyOn(this.resource, '_sendRequest')
+  })
+
+  afterEach(() => {
+    this.spy.mockReset()
+  })
+
   describe('Inputs:: getAll', () => {
     it('Should call send request if input is an object.', () => {
-      let resource = Inputs
-      let input = {}
-
-      resource.getAll(input, function (err, res) {
-        expect(resource._sendRequest).toHaveBeenCalled()
+      this.resource.getAll({}, [], (err, res) => {
+        expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call handleInputError if an object is not passed in', () => {
-      let resource = Inputs
+      jest.spyOn(this.resource, '_handleInputError')
 
-      resource.getAll('someValue', function (err, res) {
-        expect(resource._handleInputError).toHaveBeenCalled()
+      this.resource.getAll('test', (err, res) => {
+        expect(this.resource._handleInputError).toHaveBeenCalled()
+        expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call sendRequest when an input is an object and filter is passed in', () => {
-      let resource = Inputs
-
-      let input = {}
       let filter = [{
         someValue: 'someValue'
       }]
 
-      resource.getAll(input, filter, function (err, res) {
-        expect(resource._sendRequest).toHaveBeenCalled()
+      this.resource.getAll({}, filter, (err, res) => {
+        expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
   })
 
   describe('Inputs:: search', () => {
     it('Should call _sendRequest if parameters are valid', () => {
-      let resource = Inputs
-      let id = "someValue"
-
-      resource.search(id, function (err, res) {
-        expect(resource._sendRequest).toHaveBeenCalled()
+      this.resource.search('test', {}, [], (err, res) => {
+        expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if invalid', () => {
-      let resource = Inputs
+      jest.spyOn(this.resource, '_handleInputError')
 
-      resource.search({}, function (err, res) {
-        expect(resource._handleInputError).toHaveBeenCalled()
+      this.resource.search({}, {}, [], (err, res) => {
+        expect(this.resource._handleInputError).toHaveBeenCalled()
+        expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call sendRequest if a filter is passed in.', () => {
-      let resource = Inputs
-      let id = 'someValue'
       let filter = [{
         someValue: 'someValue'
       }]
 
-      resource.search(id, null, filter, function (err, res) {
-        expect(resource._sendRequest).toHaveBeenCalled()
+      this.resource.search('test', null, filter, (err, res) => {
+        expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
   })

@@ -5,9 +5,17 @@ const Resource = require('../../../lib/core/Resource')
 const Jobs = require('../../../lib/resources/Jobs')
 
 describe('Jobs Tests', () => {
+  beforeEach(() => {
+    this.resource = Jobs
+    this.spy = jest.spyOn(this.resource, '_sendRequest')
+  })
+
+  afterEach(() => {
+    this.spy.mockReset()
+  })
+
   describe('Jobs:: add', () => {
     it('Should call send request when a job is added.', () => {
-      let resource = Jobs
       let job = {
         inputs: [
           "test"
@@ -15,16 +23,17 @@ describe('Jobs Tests', () => {
         profile: "test",
         video: "test"
       }
-      resource.add(job, function (err, res) {
-        expect(resource._sendRequest).toHaveBeenCalled()
+      this.resource.add(job, (err, res) => {
+        expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call handleInputError if an object is not passed in', () => {
-      let resource = Jobs
+      jest.spyOn(this.resource, '_handleInputError')
 
-      resource.add('someValue', function (err, res) {
-        expect(resource._handleInputError).toHaveBeenCalled()
+      this.resource.add('someValue', (err, res) => {
+        expect(this.resource._handleInputError).toHaveBeenCalled()
+        expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
@@ -33,19 +42,17 @@ describe('Jobs Tests', () => {
 
   describe('Jobs:: progress', () => {
     it('Should call _sendRequest if parameters are valid', () => {
-      let resource = Jobs
-      let id = "someValue"
-
-      resource.progress(id, function (err, res) {
-        expect(resource._sendRequest).toHaveBeenCalled()
+      this.resource.progress('test', (err, res) => {
+        expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if invalid', () => {
-      let resource = Jobs
+      jest.spyOn(this.resource, '_handleInputError')
 
-      resource.progress({}, function (err, res) {
-        expect(resource._handleInputError).toHaveBeenCalled()
+      this.resource.progress({}, (err, res) => {
+        expect(this.resource._handleInputError).toHaveBeenCalled()
+        expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
   })

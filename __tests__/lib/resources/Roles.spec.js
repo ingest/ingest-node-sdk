@@ -5,21 +5,31 @@ const Resource = require('../../../lib/core/Resource')
 const Roles = require('../../../lib/resources/Roles')
 
 describe('Roles Tests', () => {
+  beforeEach(() => {
+    this.resource = Roles
+    this.spy = jest.spyOn(this.resource, '_sendRequest')
+  })
+
+  afterEach(() => {
+    this.spy.mockReset()
+  })
+
   describe('Roles:: update', () => {
     it('Should call send request if role is an object.', () => {
       let resource = Roles
       let role = {}
 
-      resource.update(role, function (err, res) {
-        expect(resource._sendRequest).toHaveBeenCalled()
+      this.resource.update(role, (err, res) => {
+        expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call handleInputError if an object is not passed in', () => {
-      let resource = Roles
+      this.spy = jest.spyOn(this.resource, '_handleInputError')
 
-      resource.update('someValue', function (err, res) {
-        expect(resource._handleInputError).toHaveBeenCalled()
+      this.resource.update('someValue', (err, res) => {
+        expect(this.resource._handleInputError).toHaveBeenCalled()
+        expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
   })
