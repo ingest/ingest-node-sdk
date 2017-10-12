@@ -1,36 +1,42 @@
 /* eslint-env jest */
-jest.mock('../../../lib/core/Request')
-
 const Networks = require('../../../lib/resources/Networks')
 
 describe('Networks Tests', () => {
   beforeEach(() => {
     this.resource = Networks
-    this.spy = jest.spyOn(this.resource, '_sendRequest')
+    this.spy = jest.spyOn(this.resource, '_sendRequest').mockImplementation((options, callback) => {
+      callback(null, true)
+    })
+    this.errorSpy = jest.spyOn(this.resource, '_handleInputError')
   })
 
   afterEach(() => {
     this.spy.mockReset()
+    this.errorSpy.mockReset()
   })
 
   describe('Networks:: linkUser', () => {
-    it('Should call _sendRequest if all params are valid', () => {
+    it('Should call _sendRequest if networkId, userId and callback are passed in properly', () => {
       this.resource.linkUser('networkId', 'userId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.linkUser({}, 'userId', (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if userId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.linkUser('networkId', {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -38,23 +44,27 @@ describe('Networks Tests', () => {
   })
 
   describe('Networks:: unlinkUser', () => {
-    it('Should call _sendRequest if all params are valid', () => {
+    it('Should call _sendRequest if networkId, userId and callback are passed in properly', () => {
       this.resource.unlinkUser('networkId', 'userId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.unlinkUser({}, 'userId', (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if userId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.unlinkUser('networkId', {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -64,35 +74,42 @@ describe('Networks Tests', () => {
   describe('Networks:: inviteUser', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.inviteUser('networkId', 'email', 'name', false, (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _sendRequest if a resend boolean is not passed in', () => {
       this.resource.inviteUser('networkId', 'email', 'name', null, (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.inviteUser({}, 'email', 'name', null, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if email is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.inviteUser('networkId', {}, 'name', null, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
-    it('Should call _handleInputError if email is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
+    it('Should call _handleInputError if name is not a string', () => {
       this.resource.inviteUser('networkId', 'email', {}, null, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -100,15 +117,18 @@ describe('Networks Tests', () => {
   })
 
   describe('Networks:: getSecureKeys', () => {
-    it('Should call _sendRequest if all params are valid', () => {
+    it('Should call _sendRequest if networkId is a string', () => {
       this.resource.getSecureKeys('networkId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.getSecureKeys({}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -122,21 +142,25 @@ describe('Networks Tests', () => {
         key: 'key'
       }
       this.resource.addSecureKey('networkId', data, (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.addSecureKey({}, {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if data is not an object', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.addSecureKey('networkId', 'data', (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -147,22 +171,24 @@ describe('Networks Tests', () => {
         title: 'test',
         key: {}
       }
-      jest.spyOn(this.resource, '_handleInputError')
+
       this.resource.addSecureKey('networkId', data, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call _sendRequest if data.title is not a string', () => {
-      let data = {
+      const data = {
         title: {},
         key: 'key'
       }
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.addSecureKey('networkId', data, (err, res) => {
-        expect(this.resource._handleInputError).toHaveBeenCalled()
-        expect(this.resource._sendRequest).not.toHaveBeenCalled()
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
+        expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
   })
@@ -170,21 +196,25 @@ describe('Networks Tests', () => {
   describe('Networks:: getSecureKeyById', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.getSecureKeyById('networkId', 'keyId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.getSecureKeyById({}, 'keyId', (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
-    it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
+    it('Should call _handleInputError if keyId is not a string', () => {
       this.resource.getSecureKeyById('networkId', {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -198,47 +228,55 @@ describe('Networks Tests', () => {
         title: 'title'
       }
       this.resource.updateSecureKey('networkId', data, (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.updateSecureKey({}, {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if data is not an object', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.updateSecureKey('networkId', 'test', (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if data.id is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
+      const spy = jest.spyOn(this.resource, '_handleInputError')
       const data = {
         id: {},
         title: 'title'
       }
       this.resource.updateSecureKey('networkId', data, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
+      spy.mockReset()
     })
 
     it('Should call _sendRequest if data.title is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       const data = {
         id: 'testId',
         title: {}
       }
       this.resource.updateSecureKey('networkId', data, (err, res) => {
-        expect(this.resource._handleInputError).toHaveBeenCalled()
-        expect(this.resource._sendRequest).not.toHaveBeenCalled()
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
+        expect(this.resource._handleInputError).not.toHaveBeenCalled()
+        expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
   })
@@ -246,21 +284,25 @@ describe('Networks Tests', () => {
   describe('Networks:: deleteSecureKey', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.deleteSecureKey('networkId', 'keyId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.deleteSecureKey({}, 'keyId', (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if keyId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.deleteSecureKey('networkId', {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -270,21 +312,25 @@ describe('Networks Tests', () => {
   describe('Networks:: createCustomer', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.createCustomer('stripeToken', 'networkId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.createCustomer('stripeToken', {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if stripeToken is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.createCustomer({}, 'networkId', (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -294,21 +340,25 @@ describe('Networks Tests', () => {
   describe('Networks:: updateCustomer', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.updateCustomer('networkId', 'cusId', 'networkName', 'stripeToken', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.updateCustomer({}, 'cusId', 'networkName', 'stripeToken', (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if stripeToken and networkName are both not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.updateCustomer('networkId', 'cusId', {}, {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -318,21 +368,16 @@ describe('Networks Tests', () => {
   describe('Networks:: deleteCustomer', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.deleteCustomer('networkId', 'cusId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.deleteCustomer({}, 'cusId', (err, res) => {
-        expect(this.resource._handleInputError).toHaveBeenCalled()
-        expect(this.resource._sendRequest).not.toHaveBeenCalled()
-      })
-    })
-
-    it('Should call _handleInputError if cusId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
-      this.resource.deleteCustomer('networkId', {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -342,21 +387,16 @@ describe('Networks Tests', () => {
   describe('Networks:: getCustomerCardInformation', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.getCustomerCardInformation('networkId', 'cusId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.getCustomerCardInformation({}, 'cusId', (err, res) => {
-        expect(this.resource._handleInputError).toHaveBeenCalled()
-        expect(this.resource._sendRequest).not.toHaveBeenCalled()
-      })
-    })
-
-    it('Should call _handleInputError if cusId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
-      this.resource.getCustomerCardInformation('networkId', {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -366,21 +406,16 @@ describe('Networks Tests', () => {
   describe('Networks:: deleteCustomerCard', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.deleteCustomerCard('networkId', 'cusId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.deleteCustomerCard({}, 'cusId', (err, res) => {
-        expect(this.resource._handleInputError).toHaveBeenCalled()
-        expect(this.resource._sendRequest).not.toHaveBeenCalled()
-      })
-    })
-
-    it('Should call _handleInputError if cusId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
-      this.resource.deleteCustomerCard('networkId', {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -390,13 +425,16 @@ describe('Networks Tests', () => {
   describe('Networks:: getInvoices', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.getInvoices('networkId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.getInvoices({}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -406,21 +444,25 @@ describe('Networks Tests', () => {
   describe('Networks:: getInvoiceById', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.getInvoiceById('networkId', 'invoiceId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.getInvoiceById({}, 'invoiceId', (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
 
-    it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
+    it('Should call _handleInputError if invoiceId is not a string', () => {
       this.resource.getInvoiceById('networkId', {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -430,13 +472,16 @@ describe('Networks Tests', () => {
   describe('Networks:: getCurrentUsage', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.getCurrentUsage('networkId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.getCurrentUsage({}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -446,13 +491,16 @@ describe('Networks Tests', () => {
   describe('Networks:: getPendingUsers', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.getPendingUsers('networkId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.getPendingUsers({}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
@@ -462,21 +510,16 @@ describe('Networks Tests', () => {
   describe('Networks:: deletePendingUser', () => {
     it('Should call _sendRequest if all params are valid', () => {
       this.resource.deletePendingUser('networkId', 'userId', (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
       })
     })
 
     it('Should call _handleInputError if networkId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.deletePendingUser({}, 'userId', (err, res) => {
-        expect(this.resource._handleInputError).toHaveBeenCalled()
-        expect(this.resource._sendRequest).not.toHaveBeenCalled()
-      })
-    })
-
-    it('Should call _handleInputError if userId is not a string', () => {
-      jest.spyOn(this.resource, '_handleInputError')
-      this.resource.deletePendingUser('networkId', {}, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })

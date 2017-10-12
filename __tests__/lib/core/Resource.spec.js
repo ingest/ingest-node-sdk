@@ -9,10 +9,12 @@ describe('Resource Tests', () => {
     this.spy = jest.spyOn(this.resource, '_sendRequest').mockImplementation(() => {
       return false
     })
+    this.errorSpy = jest.spyOn(this.resource, '_handleInputError')
   })
 
   afterEach(() => {
     this.spy.mockReset()
+    this.errorSpy.mockReset()
   })
 
   describe('Resource::_sendRequest', () => {
@@ -80,12 +82,14 @@ describe('Resource Tests', () => {
     it('Should call _sendRequest if no headers are passed in', () => {
       this.resource.getAll((err, res) => {
         expect(this.resource._sendRequest).toHaveBeenCalled()
+        expect(err).toBeNull()
       })
     })
 
     it('Should call _sendRequest if null headers are passed in', () => {
       this.resource.getAll(null, (err, res) => {
         expect(this.resource._sendRequest).toHaveBeenCalled()
+        expect(err).toBeNull()
       })
     })
 
@@ -96,10 +100,6 @@ describe('Resource Tests', () => {
   })
 
   describe('Resource:: getById', () => {
-    beforeEach(() => {
-      jest.spyOn(this.resource, '_handleInputError')
-    })
-
     it('Should call the error handler when no id is passed in', () => {
       this.resource.getById().catch(error => {
         expect(this.resource._handleInputError).toHaveBeenCalled()
@@ -123,12 +123,14 @@ describe('Resource Tests', () => {
     it('Should call _sendRequest if no headers are passed in', () => {
       this.resource.getTrashed((err, res) => {
         expect(this.resource._sendRequest).toHaveBeenCalled()
+        expect(err).toBeNull()
       })
     })
 
     it('Should call _sendRequest if null headers are passed in', () => {
       this.resource.getTrashed(null, (err, res) => {
         expect(this.resource._sendRequest).toHaveBeenCalled()
+        expect(err).toBeNull()
       })
     })
 
@@ -139,10 +141,6 @@ describe('Resource Tests', () => {
   })
 
   describe('Resource:: add', () => {
-    beforeEach(() => {
-      jest.spyOn(this.resource, '_handleInputError')
-    })
-
     it('Should call the error handler when no resource is passed in', () => {
       this.resource.add().catch(data => {
         expect(this.resource._handleInputError).toHaveBeenCalled()
@@ -162,10 +160,6 @@ describe('Resource Tests', () => {
   })
 
   describe('Resource:: update', () => {
-    beforeEach(() => {
-      jest.spyOn(this.resource, '_handleInputError')
-    })
-
     it('Should call the error handler when no resource is passed in', () => {
       this.resource.update().catch(data => {
         expect(this.resource._handleInputError).toHaveBeenCalled()
@@ -188,10 +182,6 @@ describe('Resource Tests', () => {
   })
 
   describe('Resource:: _updateResource', () => {
-    beforeEach(() => {
-      jest.spyOn(this.resource, '_handleInputError')
-    })
-
     it('Should call the error handler when no resource is passed in', () => {
       this.resource._updateResource().catch(data => {
         expect(this.resource._handleInputError).toHaveBeenCalled()
@@ -211,10 +201,6 @@ describe('Resource Tests', () => {
   })
 
   describe('Resource:: delete', () => {
-    beforeEach(() => {
-      jest.spyOn(this.resource, '_handleInputError')
-    })
-
     it('Should call the error handler when no resource is passed in', () => {
       this.resource.delete().catch(data => {
         expect(this.resource._handleInputError).toHaveBeenCalled()
@@ -234,10 +220,6 @@ describe('Resource Tests', () => {
   })
 
   describe('Resource:: permanentDelete', () => {
-    beforeEach(() => {
-      jest.spyOn(this.resource, '_handleInputError')
-    })
-
     it('Should call the error handler when no resource is passed in', () => {
       this.resource.permanentDelete().catch(data => {
         expect(this.resource._handleInputError).toHaveBeenCalled()
@@ -257,10 +239,6 @@ describe('Resource Tests', () => {
   })
 
   describe('Resource:: _deleteResource', () => {
-    beforeEach(() => {
-      jest.spyOn(this.resource, '_handleInputError')
-    })
-
     it('Should call the error handler when resource is not a string', () => {
       this.resource._deleteResource({}, true).catch(data => {
         expect(this.resource._handleInputError).toHaveBeenCalled()
@@ -283,12 +261,14 @@ describe('Resource Tests', () => {
     it('Should call _sendRequest if no headers are passed in', () => {
       this.resource.search('input', (err, res) => {
         expect(this.resource._sendRequest).toHaveBeenCalled()
+        expect(err).toBeNull()
       })
     })
 
     it('Should call _sendRequest if null headers are passed in', () => {
       this.resource.search('input', null, (err, res) => {
         expect(this.resource._sendRequest).toHaveBeenCalled()
+        expect(err).toBeNull()
       })
     })
 
@@ -298,9 +278,10 @@ describe('Resource Tests', () => {
     })
 
     it('Should call _handleInputError if no input is passed in', () => {
-      jest.spyOn(this.resource, '_handleInputError')
       this.resource.search(null, null, (err, res) => {
         expect(this.resource._handleInputError).toHaveBeenCalled()
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
       })
     })
   })

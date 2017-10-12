@@ -40,8 +40,10 @@ describe('Utils Tests', () => {
 
   describe('Utils::parseTokenPayload', () => {
     it('Should return the parsed payload if token is valid', () => {
-      const token = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovLyouaW5nZXN0LmluZm8iLCJjaWQiOiJJbmdlc3REYXNoYm9hcmQiLCJleHAiOjE1MDc4MjcxNjgsImp0aSI6IjkyMTFlYzI2LTlhYmYtNDg4Zi04OTJjLWU2NzM5NGI3MDhmMCIsImlhdCI6MTUwNzc0MDc2OCwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5pbmdlc3QuaW5mbyIsIm50dyI6IjE0Y2Y4Y2U4LTZlOGUtNDIzZi1hOTJiLTgzM2NkMjExZmM3NCIsInNjb3BlIjp7ImFjdGlvbnMiOlsicGVyc29uYWwiLCJyZWFkX2JpbGxpbmciLCJyZWFkX2NsaWVudHMiLCJyZWFkX2V2ZW50cyIsInJlYWRfaG9va3MiLCJyZWFkX2lucHV0cyIsInJlYWRfam9icyIsInJlYWRfbGl2ZSIsInJlYWRfbmV0S2V5cyIsInJlYWRfbmV0d29ya3MiLCJyZWFkX3Byb2ZpbGVzIiwicmVhZF91c2VycyIsInJlYWRfdmlkZW9zIiwid3JpdGVfYmlsbGluZyIsIndyaXRlX2NsaWVudHMiLCJ3cml0ZV9ob29rcyIsIndyaXRlX2lucHV0cyIsIndyaXRlX2pvYnMiLCJ3cml0ZV9saXZlIiwid3JpdGVfbG9ja2VkX3Byb2ZpbGVzIiwid3JpdGVfbmV0S2V5cyIsIndyaXRlX25ldHdvcmtzIiwid3JpdGVfcHJvZmlsZXMiLCJ3cml0ZV91c2VycyIsIndyaXRlX3ZpZGVvcyJdfSwic3ViIjoiNjg3Mjc1YzItYWVlNS00N2QyLWI1Y2UtZmUzMjZlMmU0MTcwIn0.WsMMPLFTksMMpedk78v6NfkdFVq8BvzbwYWMcsCKXQM3ePiA8poSYT48KMwXGjgpsXcA_t5KvwdoxJ7VfxeICBIjHUGRTK3P8e3Dz2IqqHsHQ3LHW1TuTbPPOzGu5bAqz_INWgJC3-ssAGUxfj7mf4gPRKK9WexZsVhWxwL9zJ2x_Qx26yvZTGXvtwJbmmRPiNFlzB2RGvZ7pqhhko5Pnj8uqJs3vvSLwW-w4t-BKhDcXc0JH6Hfk3LwRYYykBm6wQcZWbPpE-jJs4OMfKm2uqNytPq217lYgbULK2FOUgUkGi41I8ZL4hZu4U-ZQcH8BUQJZOI1WrfCaV-3ToKDUw'
-      const result = Utils.parseTokenPayload(token)
+      // This valid tokens expiry is in the year 2999
+      const valid_token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIzMjUwMzU5MzYwMCIsInN1YiI6IjEyMzQ1Njc4OTAiLCJuYW1lIjoiSm9obiBEb2UiLCJhZG1pbiI6dHJ1ZX0.SRJ8AvhOJyJPfcl5Aqf8-ZiKVoDy72h0RwJQJzx28nI'; // eslint-disable-line
+
+      const result = Utils.parseTokenPayload(valid_token)
       expect(result).not.toBeNull()
     })
 
@@ -56,7 +58,7 @@ describe('Utils Tests', () => {
       expect(result).toBeNull()
     })
 
-    it('Should return the parsed payload if token is valid', () => {
+    it('Should return null if parsed payload errors', () => {
       const token = 'Bearer test.test'
       const result = Utils.parseTokenPayload(token)
       expect(result).toBeNull()
@@ -64,8 +66,29 @@ describe('Utils Tests', () => {
   })
 
   describe('Utils::isExpired', () => {
-    it('Should have a default options object upon creation', () => {
-      expect(true).toBeTruthy()
+    it('Should return false if the token is still valid', function () {
+      // This valid tokens expiry is in the year 2999
+      const valid_token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIzMjUwMzU5MzYwMCIsInN1YiI6IjEyMzQ1Njc4OTAiLCJuYW1lIjoiSm9obiBEb2UiLCJhZG1pbiI6dHJ1ZX0.SRJ8AvhOJyJPfcl5Aqf8-ZiKVoDy72h0RwJQJzx28nI'; // eslint-disable-line
+      let result = Utils.isExpired(valid_token)
+      expect(result).toEqual(false)
+    })
+
+    it('Should return true if the token is expired.', function () {
+      const invalid_token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIxNDUwMzY2NzkxIiwic3ViIjoiMTIzNDU2Nzg5MCIsIm5hbWUiOiJKb2huIERvZSIsImFkbWluIjp0cnVlfQ.MGdv4o_sNc84OsRlsitw6D933A3zBqEEacEdp30IQeg';  //eslint-disable-line
+      expect(Utils.isExpired(invalid_token)).toEqual(true)
+    })
+
+    it('Should return true if the token does not have an exp.', function () {
+      const malformed_token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds' //eslint-disable-line
+      expect(Utils.isExpired(malformed_token)).toEqual(true)
+    })
+
+    it('Should return true if data is null', function () {
+      this.spy = jest.spyOn(Utils, 'parseTokenPayload').mockImplementation(() => {
+        return null
+      })
+      const malformed_token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds' //eslint-disable-line
+      expect(Utils.isExpired(malformed_token)).toEqual(true)
     })
   })
 })
