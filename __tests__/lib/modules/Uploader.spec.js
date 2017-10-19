@@ -1,4 +1,4 @@
-// /* eslint-env jest */
+/* eslint-env jest */
 jest.mock('../../../lib/core/Request')
 
 const Uploader = require('../../../lib/modules/Uploader')
