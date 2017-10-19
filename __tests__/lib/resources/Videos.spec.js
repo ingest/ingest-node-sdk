@@ -202,6 +202,29 @@ describe('Videos Tests', () => {
         expect(this.resource._sendRequest).not.toHaveBeenCalled()
       })
     })
+
+    it('Should call _handleInputError if passed in id is not a string', () => {
+      this.resource.uploadThumbnail({}, null, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
+        expect(this.resource._handleInputError).toHaveBeenCalled()
+        expect(this.resource._sendRequest).not.toHaveBeenCalled()
+      })
+    })
+
+    it('Should call _sendRequest if all params are valid', () => {
+      let image = {
+        data: "test",
+        filename: "test",
+        contentType: "test"
+      }
+      this.resource.uploadThumbnail('testId', image, (err, res) => {
+        expect(res).toBeDefined()
+        expect(err).toBeNull()
+        expect(this.resource._handleInputError).not.toHaveBeenCalled()
+        expect(this.resource._sendRequest).toHaveBeenCalled()
+      })
+    })
   })
 
   describe('Videos:: deleteThumbnail', () => {
