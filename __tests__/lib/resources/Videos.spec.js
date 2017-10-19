@@ -214,9 +214,9 @@ describe('Videos Tests', () => {
 
     it('Should call _sendRequest if all params are valid', () => {
       let image = {
-        data: "test",
-        filename: "test",
-        contentType: "test"
+        data: 'test',
+        filename: 'test',
+        contentType: 'test'
       }
       this.resource.uploadThumbnail('testId', image, (err, res) => {
         expect(res).toBeDefined()
