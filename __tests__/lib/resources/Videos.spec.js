@@ -193,7 +193,16 @@ describe('Videos Tests', () => {
     })
   })
 
-  // TODO: Add in "AddThumbnail" test here when Uploader is completed
+  describe('Videos:: uploadThumbnail', () => {
+    it('Should call _handleInputError if passed in image is falsy', () => {
+      this.resource.uploadThumbnail('testId', null, (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
+        expect(this.resource._handleInputError).toHaveBeenCalled()
+        expect(this.resource._sendRequest).not.toHaveBeenCalled()
+      })
+    })
+  })
 
   describe('Videos:: deleteThumbnail', () => {
     it('Should call _sendRequest if valid params are passed in', () => {
