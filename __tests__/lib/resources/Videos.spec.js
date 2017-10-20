@@ -216,7 +216,7 @@ describe('Videos Tests', () => {
       let image = {
         data: 'test',
         filename: 'test',
-        contentType: 'test'
+        contentType: 'image/jpg'
       }
       this.resource.uploadThumbnail('testId', image, (err, res) => {
         expect(res).toBeDefined()
