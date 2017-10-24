@@ -17,7 +17,8 @@ describe('Serial Promises Tests', () => {
 
   describe('SerialPromises::getPromise', () => {
     it('Should return the internal promise variable', () => {
-      const promise = Promise.reject()
+      const error = new Error()
+      const promise = Promise.reject(error)
       this.instance.promise = promise
       const returned = this.instance.getPromise()
       expect(returned).toBe(promise)

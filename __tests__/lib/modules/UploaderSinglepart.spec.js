@@ -1,10 +1,7 @@
 /* eslint-env jest */
 jest.mock('../../../lib/core/Request', () => require('../../../_mocks_/Request.js'))
 
-const Utils = require('../../../lib/core/Utils')
 const UploaderSinglepart = require('../../../lib/modules/UploaderSinglepart')
-const UploaderBase = require('../../../lib/modules/UploaderBase')
-const Uploader = require('../../../lib/modules/Uploader')
 const Inputs = require('../../../lib/resources/Inputs')
 
 describe('UploaderSinglepart Tests', () => {
@@ -12,7 +9,7 @@ describe('UploaderSinglepart Tests', () => {
 
   beforeEach(() => {
     this.uploader = new UploaderSinglepart({
-      api: {host: 'https://api.ingest.info', token: validToken, Inputs: Inputs },
+      api: { host: 'https://api.ingest.info', token: validToken, Inputs: Inputs },
       file: {
         name: 'test',
         size: 123,
@@ -38,12 +35,6 @@ describe('UploaderSinglepart Tests', () => {
   })
 
   it('Should return if upload is complete', () => {
-    const options = {
-      pass: true,
-      data: {
-        test: 'test'
-      }
-    }
     this.uploader.uploadComplete = true
     this.uploader.pause()
 
@@ -52,12 +43,6 @@ describe('UploaderSinglepart Tests', () => {
 
   describe('UploaderSinglepart::resume', () => {
     it('Should change pause to false', () => {
-      const options = {
-        pass: true,
-        data: {
-          test: 'test'
-        }
-      }
       this.uploader.paused = true
       this.uploader.resume()
       expect(this.uploader.paused).toBeFalsy()
@@ -205,8 +190,8 @@ describe('UploaderSinglepart Tests', () => {
       const calls = this.uploader.file.data.on.mock.calls
       const data = calls[0][1]
       const end = calls[1][1]
-      const buf1 = new Buffer('foo')
-      const buf2 = new Buffer('bar')
+      const buf1 = Buffer.alloc(1)
+      const buf2 = Buffer.alloc(2)
       const combinedBuffer = Buffer.concat([buf1, buf2])
       data(buf1)
       data(buf2)
@@ -253,6 +238,7 @@ describe('UploaderSinglepart Tests', () => {
     })
 
     it('Should catch the error and call singlePartReject', (done) => {
+      const error = new Error()
       // Have to assign this to an empty function so we can spy on it.
       this.uploader.singlePartResolve = () => {}
       this.uploader.singlePartReject = () => {}
@@ -261,7 +247,7 @@ describe('UploaderSinglepart Tests', () => {
       }
 
       jest.spyOn(this.uploader, '_signChunk').mockImplementation(() => Promise.resolve())
-      jest.spyOn(this.uploader, '_sendChunk').mockImplementation(() => Promise.reject())
+      jest.spyOn(this.uploader, '_sendChunk').mockImplementation(() => Promise.reject(error))
       jest.spyOn(this.uploader, '_sendSinglepartComplete').mockImplementation(() => Promise.resolve())
       jest.spyOn(this.uploader, 'singlePartResolve')
       jest.spyOn(this.uploader, 'singlePartReject')

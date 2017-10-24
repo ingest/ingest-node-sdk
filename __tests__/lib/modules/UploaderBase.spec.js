@@ -2,7 +2,6 @@
 jest.mock('../../../lib/core/Request', () => require('../../../_mocks_/Request.js'))
 jest.mock('request', () => require('../../../_mocks_/RequestLibrary.js'))
 
-const request = require('request')
 const UploaderBase = require('../../../lib/modules/UploaderBase')
 
 describe('UploaderBase Tests', () => {
@@ -21,7 +20,9 @@ describe('UploaderBase Tests', () => {
 
   describe('UploaderBase::progress', () => {
     it('Should set config.progress to a callback function', () => {
-      this.uploaderBase.progress(function (err, res) {})
+      this.uploaderBase.progress(function (err, res) {
+        expect(err).toBeNull()
+      })
       expect(typeof this.uploaderBase.config.progress).toBe('function')
     })
   })
@@ -71,7 +72,8 @@ describe('UploaderBase Tests', () => {
       })
 
       jest.spyOn(this.uploaderBase, '_uploadInputRecord').mockImplementation(() => {
-        return Promise.reject(false)
+        const error = new Error()
+        return Promise.reject(error)
       })
 
       this.uploaderBase.save((err, res) => {

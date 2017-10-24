@@ -13,7 +13,7 @@ describe('Uploader Tests', () => {
   describe('Uploader::constructor', () => {
     it('Should return an error message if options are not passed in', function () {
       expect(() => {
-        const uploader = new Uploader()
+        const uploader = new Uploader()  // eslint-disable-line no-unused-vars
       }).toThrow()
     })
 

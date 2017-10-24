@@ -1,7 +1,6 @@
 /* eslint-env jest */
 jest.mock('../../../lib/core/Request', () => require('../../../_mocks_/Request.js'))
 
-const Uploader = require('../../../lib/modules/Uploader')
 const UploaderMultipart = require('../../../lib/modules/UploaderMultipart')
 const SerialPromises = require('../../../lib/modules/SerialPromises')
 
@@ -329,7 +328,7 @@ describe('UploaderMultipart Tests', () => {
 
     it('Should reset pieces and piecesByteLength', () => {
       this.uploader.piecesByteLength = 42
-      this.uploader.pieces = [new Buffer(''), new Buffer('')]
+      this.uploader.pieces = [Buffer.alloc(2), Buffer.alloc(2)]
       this.uploader._flushPiecesToChunk()
       expect(this.uploader.piecesByteLength).toBe(0)
       expect(this.uploader.pieces.length).toBe(0)
