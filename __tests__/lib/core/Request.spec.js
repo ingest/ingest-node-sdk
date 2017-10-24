@@ -260,7 +260,7 @@ describe('Request Tests', () => {
     })
 
     describe('prepareHeaders', () => {
-      it('Should return true if header is lowercase.', () => {
+      it('Should return all passed in headers lowercased.', () => {
         const key = {
           UPPERCASE: 'someValue'
         }
@@ -268,17 +268,6 @@ describe('Request Tests', () => {
 
         expect(result).toEqual({
           uppercase: 'someValue'
-        })
-      })
-
-      it('Should return false if header is not lowercase.', () => {
-        const key = {
-          UPPERCASE: 'someValue'
-        }
-        const result = Request.prototype.prepareHeaders(key)
-
-        expect(result).not.toEqual({
-          UPPERCASE: 'someValue'
         })
       })
     })
