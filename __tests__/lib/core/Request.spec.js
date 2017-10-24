@@ -98,7 +98,11 @@ describe('Request Tests', () => {
       })
 
       const options = {
-        url: 'someUrl'
+        url: 'someUrl',
+        headers: {},
+        data: {
+          value: 'somevalue'
+        }
       }
 
       const myRequest = new Request(options)
@@ -291,76 +295,4 @@ describe('Request Tests', () => {
       })
     })
   })
-
-  // describe('makeRequest', () => {
-  //   it('Should return a promise when called.', (done) => {
-  //     const originalMakeRequest = Request.prototype.makeRequest
-
-  //     jest.spyOn(Request.prototype, 'makeRequest').mockImplementation(() => {
-  //       return true
-  //     })
-
-  //     jest.spyOn(Config, 'getToken').mockImplementation(() => {
-  //       return true
-  //     })
-
-  //     jest.spyOn(Utils, 'isExpired').mockImplementation(() => {
-  //       return false
-  //     })
-
-  //     const request = new Request({
-  //       url: 'someUrl',
-  //       headers: {},
-  //       data: {
-  //         test: "test"
-  //       }
-  //     })
-
-  //     jest.spyOn(request, 'prepareHeaders').mockImplementation(() => {
-  //       return {}
-  //     })
-
-  //     jest.spyOn(request, 'preparePostData').mockImplementation(() => {
-  //       return true
-  //     })
-
-  //     originalMakeRequest.call(request).then(() => {
-  //       done()
-  //     }).catch((err) => {
-  //       done()
-  //     })
-
-  //     expect(request.prepareHeaders).toHaveBeenCalled()
-  //     expect(request.preparePostData).toHaveBeenCalled()
-  //   })
-
-  //   // it('Should call preparePostData if data option is passed in.', (done) => {
-  //   //   jest.spyOn(Utils, 'isExpired').mockImplementation( () => {
-  //   //     return false
-  //   //   })
-  //   //   jest.spyOn(Config, 'getToken').mockImplementation( () => {
-  //   //     return 'someToken'
-  //   //   })
-
-  //   //   jest.spyOn(Request.prototype, 'preparePostData').mockImplementation( () => {
-  //   //     return {}
-  //   //   })
-
-  //   //   const request = new Request({
-  //   //     url: 'someurl2',
-  //   //     data: {
-  //   //       test: 'test'
-  //   //     }
-  //   //   })
-
-  //   //   done()
-  //   //   expect(request.preparePostData).toHaveBeenCalled()
-  //   // })
-  // })
-
-  // describe('requestComplete', () => {
-  //   it('Should do the thing', () => {
-
-  //   })
-  // })
 })
