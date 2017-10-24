@@ -205,13 +205,6 @@ describe('UploaderBase Tests', () => {
         done()
       })
     })
-
-    // it('Should return a promise that initializes input record', (done) => {
-    //   this.uploaderBase.aborted = false
-
-    //   let promise = this.uploaderBase._initializeInputRecord()
-
-    // })
   })
 
   describe('UploaderBase::_initializeInputRecordComplete', () => {
