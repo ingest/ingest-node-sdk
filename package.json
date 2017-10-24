@@ -3,12 +3,6 @@
   "version": "1.0.0",
   "description": "Node SDK for communicating with Ingest's REST API.",
   "main": "./lib/ingest.js",
-  "scripts": {
-    "lint": "standard ./**/*.js --verbose | snazzy",
-    "lint:fix": "standard --fix",
-    "test": "jest",
-    "test:watch": "jest --watch"
-  },
   "author": "Ingest (https://www.ingest.io/)",
   "homepage": "https://github.com/ingest/ingest-node-sdk",
   "bugs": {
