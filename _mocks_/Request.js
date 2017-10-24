@@ -15,7 +15,6 @@ class RequestMock {
     wrapper.cancel = () => {
       activeRequest.abort()
     }
-
     return wrapper
   }
 }
