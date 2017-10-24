@@ -1,5 +1,5 @@
 /* eslint-env jest */
-jest.mock('../../../lib/core/Request')
+jest.mock('../../../lib/core/Request', () => require('../../../_mocks_/Request.js'))
 
 const Resource = require('../../../lib/core/Resource')
 

@@ -1,5 +1,5 @@
 /* eslint-env jest */
-jest.mock('../../../lib/core/Request')
+jest.mock('../../../lib/core/Request', () => require('../../../_mocks_/Request.js'))
 
 const Uploader = require('../../../lib/modules/Uploader')
 
@@ -31,7 +31,6 @@ describe('Uploader Tests', () => {
       this.uploader.progress(function (err, res) {
         // TODO: need to add a real test here
         expect(err).toBeNull()
-        expect(true).toBeTruthy
       })
     })
   })
