@@ -1,112 +1,94 @@
 /* eslint-env jest */
 'use strict'
 
+jest.mock('request', () => require('../../../_mocks_/RequestLibrary.js'))
+
 const Request = require('../../../lib/core/Request')
 const Config = require('../../../lib/core/Config')
 const Utils = require('../../../lib/core/Utils')
 
 describe('Request Tests', () => {
-  // describe('Request::constructor', () => {
-  //   it('Should return an error message if options are not passed in', function () {
-  //     const request = new Request()
-  //     request.catch((err) => {
-  //       expect(err.message).toMatch(/IngestAPI Request options are required/)
-  //     })
-  //   })
+  describe('Request::constructor', () => {
+    it('Should return an error message if options are not passed in', function () {
+      const myRequest = new Request()
 
-  //   it('Should return an error message if options are not an object', function () {
-  //     const request = new Request('options')
-  //     request.catch((err) => {
-  //       expect(err.message).toMatch(/IngestAPI Request options are required/)
-  //     })
-  //   })
+      myRequest.request.then((response) => {
+        expect(response).not.toBeDefined()
+      }).catch((err) => {
+        expect(err).toBeDefined()
+        expect(err.message).toMatch(/IngestAPI Request options are required/)
+      })
+    })
 
-  //   it('Should return an error message if a url is not passed in the options', function () {
-  //     const options = {
-  //       token: 'test'
-  //     }
-  //     const request = new Request(options)
-  //     request.catch((err) => {
-  //       expect(err.message).toMatch(/IngestAPI Request options requires a url to make the request/)
-  //     })
-  //   })
+    it('Should return an error message if options are not an object', function () {
+      const myRequest = new Request()
 
-  //   it('Should return an error message if a token is not set', function () {
-  //     jest.spyOn(Config, 'getToken').mockImplementation(() => {
-  //       return false
-  //     })
+      myRequest.request.then((response) => {
+        expect(response).not.toBeDefined()
+      }).catch((err) => {
+        expect(err).toBeDefined()
+        expect(err.message).toMatch(/IngestAPI Request options are required/)
+      })
+    })
 
-  //     const options = {
-  //       url: 'someUrl'
-  //     }
+    it('Should return an error message if a url is not passed in the options', function () {
+      const options = {
+        token: 'test'
+      }
 
-  //     const request = new Request(options)
-  //     request.catch((err) => {
-  //       expect(err.message).toMatch(/IngestSDK requires a token to be set prior to use/)
-  //     })
-  //   })
+      const myRequest = new Request(options)
 
-  //   it('Should return an error message if a token is not valid', function () {
-  //     jest.spyOn(Config, 'getToken').mockImplementation(() => {
-  //       return true
-  //     })
+      myRequest.request.then((response) => {
+        expect(response).not.toBeDefined()
+      }).catch((err) => {
+        expect(err).toBeDefined()
+        expect(err.message).toMatch(/IngestAPI Request options requires a url to make the request/)
+      })
+    })
 
-  //     jest.spyOn(Utils, 'isExpired').mockImplementation(() => {
-  //       return true
-  //     })
+    it('Should return an error message if a token is not set', function () {
+      jest.spyOn(Config, 'getToken').mockImplementation(() => {
+        return false
+      })
 
-  //     const options = {
-  //       url: 'someUrl'
-  //     }
+      const options = {
+        url: 'someUrl'
+      }
 
-  //     const request = new Request(options)
-  //     request.catch((err) => {
-  //       expect(err.message).toMatch(/IngestAPI Request options requires a valid token/)
-  //     })
-  //   })
+      const myRequest = new Request(options)
 
-  //   it('Should return call makeRequest if all params are valid', function () {
-  //     jest.spyOn(Config, 'getToken').mockImplementation(() => {
-  //       return true
-  //     })
+      myRequest.request.then((response) => {
+        expect(response).not.toBeDefined()
+      }).catch((err) => {
+        expect(err).toBeDefined()
+        expect(err.message).toMatch(/IngestSDK requires a token to be set prior to use/)
+      })
+    })
 
-  //     jest.spyOn(Utils, 'isExpired').mockImplementation(() => {
-  //       return false
-  //     })
-
-  //     jest.spyOn(Request.prototype, 'makeRequest').mockImplementation(() => {
-  //       return true
-  //     })
-
-  //     const options = {
-  //       url: 'someUrl'
-  //     }
-
-  //     const request = new Request(options)
-  //     expect(request.makeRequest).toHaveBeenCalled()
-  //   })
-  // })
-
-  // describe('handleError', () => {
-  //   it('Should return a rejected Promise', () => {
-  //     jest.spyOn(Request.prototype, 'handleError').mockImplementation( () => {
-  //       return false
-  //     })
-  //     let error = 'something'
-  //     const result = Request.prototype.handleError(error)
-
-  //     expect(error).toEqual('something')
-  //   })
-  // })
-
-  describe('makeRequest', () => {
-    it('Should return a promise when called.', (done) => {
-      const originalMakeRequest = Request.prototype.makeRequest
-
-      jest.spyOn(Request.prototype, 'makeRequest').mockImplementation(() => {
+    it('Should return an error message if a token is not valid', function () {
+      jest.spyOn(Config, 'getToken').mockImplementation(() => {
         return true
       })
 
+      jest.spyOn(Utils, 'isExpired').mockImplementation(() => {
+        return true
+      })
+
+      const options = {
+        url: 'someUrl'
+      }
+
+      const myRequest = new Request(options)
+
+      myRequest.request.then((response) => {
+        expect(response).not.toBeDefined()
+      }).catch((err) => {
+        expect(err).toBeDefined()
+        expect(err.message).toMatch(/IngestAPI Request options requires a valid token/)
+      })
+    })
+
+    it('Should return call makeRequest if all params are valid', function () {
       jest.spyOn(Config, 'getToken').mockImplementation(() => {
         return true
       })
@@ -115,167 +97,270 @@ describe('Request Tests', () => {
         return false
       })
 
-      const request = new Request({
-        url: 'someUrl',
-        headers: {},
-        data: {
-          test: "test"
-        }
-      })
+      const options = {
+        url: 'someUrl'
+      }
 
-      jest.spyOn(request, 'prepareHeaders').mockImplementation(() => {
-        return {}
-      })
+      const myRequest = new Request(options)
 
-      jest.spyOn(request, 'preparePostData').mockImplementation(() => {
+      expect(myRequest.request).toBeDefined()
+      expect(myRequest.cancel).toBeDefined()
+    })
+  })
+
+  describe('Request::Class Tests', () => {
+    beforeEach(() => {
+      jest.spyOn(Config, 'getToken').mockImplementation(() => {
         return true
       })
 
-      originalMakeRequest.call(request).then(() => {
-        done()
-      }).catch((err) => {
-        done()
+      jest.spyOn(Utils, 'isExpired').mockImplementation(() => {
+        return false
       })
 
-      expect(request.prepareHeaders).toHaveBeenCalled()
-      expect(request.preparePostData).toHaveBeenCalled()
+      this.myRequest = new Request({
+        url: 'someurl'
+      })
     })
 
-    // it('Should call preparePostData if data option is passed in.', (done) => {
-    //   jest.spyOn(Utils, 'isExpired').mockImplementation( () => {
-    //     return false
-    //   })
-    //   jest.spyOn(Config, 'getToken').mockImplementation( () => {
-    //     return 'someToken'
-    //   })
+    describe('Request::handleError', () => {
+      it('Should return a rejected Promise', () => {
+        const errorMessage = 'someerror'
+        const result = Request.prototype.handleError(errorMessage)
 
-    //   jest.spyOn(Request.prototype, 'preparePostData').mockImplementation( () => {
-    //     return {}
-    //   })
+        expect(result.request).toBeDefined()
+      })
+    })
 
-    //   const request = new Request({
-    //     url: 'someurl2',
-    //     data: {
-    //       test: 'test'
-    //     }
-    //   })
+    describe('Request::preparePostData', () => {
+      it('Should return an object with no data', () => {
+        const result = Request.prototype.preparePostData()
 
-    //   done()
-    //   expect(request.preparePostData).toHaveBeenCalled()
-    // })
+        expect(result).toEqual({
+          data: null,
+          success: true,
+          type: null
+        })
+      })
+
+      it('Should return an object with stringified data', () => {
+        const data = {
+          someHeader: 'someValue'
+        }
+        const result = Request.prototype.preparePostData(data)
+
+        expect(result).toEqual({
+          data: JSON.stringify({
+            someHeader: 'someValue'
+          }),
+          success: true,
+          type: 'JSON'
+        })
+      })
+    })
+
+    describe('Request::requestComplete', () => {
+      let reject, resolve
+
+      beforeEach(() => {
+        reject = jest.fn()
+        resolve = jest.fn()
+
+        jest.spyOn(Request.prototype, 'isValidResponseCode')
+        jest.spyOn(Request.prototype, 'processResponse')
+      })
+
+      it('Should call reject if an error is present', () => {
+        Request.prototype.requestComplete(reject, resolve, 'someerror')
+        expect(reject).toHaveBeenCalledWith('someerror')
+      })
+
+      it('Should reject if an invalid response code is thrown', () => {
+        const response = {
+          statusMessage: 'StatusMessage',
+          statusCode: 400,
+          headers: {
+            someheader: 'someheader'
+          }
+        }
+
+        Request.prototype.requestComplete(reject, resolve, null, response, {})
+
+        expect(reject).toHaveBeenCalledWith({
+          statusMessage: 'StatusMessage',
+          statusCode: 400,
+          headers: {
+            someheader: 'someheader'
+          },
+          message: 'Invalid Response Code'
+        })
+      })
+
+      it('Should resovle if everything is ok', () => {
+        const response = {
+          statusMessage: 'StatusMessage',
+          statusCode: 200,
+          headers: {
+            someheader: 'someheader'
+          }
+        }
+
+        Request.prototype.requestComplete(reject, resolve, null, response, {})
+
+        expect(resolve).toHaveBeenCalledWith({
+          data: {},
+          headers: {
+            someheader: 'someheader'
+          },
+          statusCode: 200
+        })
+      })
+    })
+
+    describe('Request::processResponse', () => {
+      it('Should process the response and return the final output with no data', () => {
+        const response = {
+          headers: {},
+          statusCode: 200
+        }
+
+        const result = Request.prototype.processResponse(response, {})
+
+        expect(result).toEqual({
+          data: {},
+          headers: response.headers,
+          statusCode: response.statusCode
+        })
+      })
+
+      it('Should process the response and return the final output with data', () => {
+        const response = {
+          headers: {
+            'content-type': 'application/json'
+          },
+          statusCode: 200
+        }
+
+        const result = Request.prototype.processResponse(response, JSON.stringify({
+          id: '1234'
+        }))
+
+        expect(result).toEqual({
+          data: {
+            id: '1234'
+          },
+          headers: response.headers,
+          statusCode: response.statusCode
+        })
+      })
+    })
+
+    describe('prepareHeaders', () => {
+      it('Should return true if header is lowercase.', () => {
+        const key = {
+          UPPERCASE: 'someValue'
+        }
+        const result = Request.prototype.prepareHeaders(key)
+
+        expect(result).toEqual({
+          uppercase: 'someValue'
+        })
+      })
+
+      it('Should return false if header is not lowercase.', () => {
+        const key = {
+          UPPERCASE: 'someValue'
+        }
+        const result = Request.prototype.prepareHeaders(key)
+
+        expect(result).not.toEqual({
+          UPPERCASE: 'someValue'
+        })
+      })
+    })
+
+    describe('isValidResponseCode', () => {
+      it('Should return true if responseCode is valid', () => {
+        const result = Request.prototype.isValidResponseCode(201)
+        expect(result).toBeTruthy()
+      })
+
+      it('Should return false if responseCode is invalid', () => {
+        const result = Request.prototype.isValidResponseCode(400)
+        expect(result).toBeFalsy()
+      })
+    })
   })
 
-  // describe('preparePostData', () => {
-  //   it('Should return an object with no data', () => {
-  //     // double check this one
-  //     const data = {}
+  // describe('makeRequest', () => {
+  //   it('Should return a promise when called.', (done) => {
+  //     const originalMakeRequest = Request.prototype.makeRequest
 
-  //     const result = Request.prototype.preparePostData(data)
-
-  //     expect(result).toEqual({
-  //       "data": "{}",
-  //       "success": true,
-  //       "type": "JSON"
+  //     jest.spyOn(Request.prototype, 'makeRequest').mockImplementation(() => {
+  //       return true
   //     })
+
+  //     jest.spyOn(Config, 'getToken').mockImplementation(() => {
+  //       return true
+  //     })
+
+  //     jest.spyOn(Utils, 'isExpired').mockImplementation(() => {
+  //       return false
+  //     })
+
+  //     const request = new Request({
+  //       url: 'someUrl',
+  //       headers: {},
+  //       data: {
+  //         test: "test"
+  //       }
+  //     })
+
+  //     jest.spyOn(request, 'prepareHeaders').mockImplementation(() => {
+  //       return {}
+  //     })
+
+  //     jest.spyOn(request, 'preparePostData').mockImplementation(() => {
+  //       return true
+  //     })
+
+  //     originalMakeRequest.call(request).then(() => {
+  //       done()
+  //     }).catch((err) => {
+  //       done()
+  //     })
+
+  //     expect(request.prepareHeaders).toHaveBeenCalled()
+  //     expect(request.preparePostData).toHaveBeenCalled()
   //   })
 
-  //   it('Should return an object with stringified data', () => {
-  //     const data = {
-  //       someHeader: 'someValue'
-  //     }
-  //     const result = Request.prototype.preparePostData(data)
-
-  //     expect(result).toEqual({
-  //       "data": "{\"someHeader\":\"someValue\"}",
-  //       "success": true,
-  //       "type": "JSON"
-  //     })
-  //   })
-
-  //   // Test passes, but data object messes with linting rules, should i just remove this?
-  //   // it('Should call handle error', () => {
-  //   //   //set up a spy on handleError
-  //   //   jest.spyOn(Request.prototype, 'handleError').mockImplementation( () => {
-  //   //     return true
+  //   // it('Should call preparePostData if data option is passed in.', (done) => {
+  //   //   jest.spyOn(Utils, 'isExpired').mockImplementation( () => {
+  //   //     return false
+  //   //   })
+  //   //   jest.spyOn(Config, 'getToken').mockImplementation( () => {
+  //   //     return 'someToken'
   //   //   })
 
-  //   //   const data = {
-  //   //     'invalidObject'
-  //   //   }
+  //   //   jest.spyOn(Request.prototype, 'preparePostData').mockImplementation( () => {
+  //   //     return {}
+  //   //   })
 
-  //   //   const result = Request.prototype.preparePostData(data)
+  //   //   const request = new Request({
+  //   //     url: 'someurl2',
+  //   //     data: {
+  //   //       test: 'test'
+  //   //     }
+  //   //   })
 
-  //   //   expect(result).toEqual('Error parsing JSON')
+  //   //   done()
+  //   //   expect(request.preparePostData).toHaveBeenCalled()
   //   // })
   // })
 
   // describe('requestComplete', () => {
   //   it('Should do the thing', () => {
 
-  //   })
-  // })
-
-  // describe('processResponse', () => {
-  //   it('Should process the response and parse certain content types.', () => {
-  //     // let responseType = ""
-  //     // let result = ""
-
-  //     // result = Request.prototype.processResponse()
-
-  //     // expect(result).toEqual({
-  //     //   data: "",
-  //     //   headers: "",
-  //     //   statusCode: ""
-  //     // })
-  //   })
-
-  //   it('Should fail and return an error.', () => {
-  //     // let responseType = ""
-  //     // let result = ""
-  //     // const error = ""
-  //     // result = Request.prototype.processResponse()
-
-  //     // expect(result).toEqual('JSON parsing failed' + error.stack)
-  //   })
-  // })
-
-  // describe('prepareHeaders', () => {
-  //   it('Should return true if header is lowercase.', () => {
-  //     const key = {
-  //       UPPERCASE:'someValue'
-  //     }
-  //     const result = Request.prototype.prepareHeaders(key)
-
-  //     expect(result).toEqual({
-  //       uppercase:'someValue'
-  //     })
-  //   })
-
-  //   it('Should return false if header is not lowercase.', () => {
-  //     const key = {
-  //       UPPERCASE:'someValue'
-  //     }
-  //     const result = Request.prototype.prepareHeaders(key)
-
-  //     expect(result).not.toEqual({
-  //       UPPERCASE:'someValue'
-  //     })
-  //   })
-
-  // })
-
-  // describe('isValidResponseCode', () => {
-
-  //   it('Should return true if responseCode is valid', () => {
-  //     const result = Request.prototype.isValidResponseCode(201)
-
-  //     expect(result).toBeTruthy()
-  //   })
-
-  //   it('Should return false if responseCode is invalid', () => {
-  //     const result = Request.prototype.isValidResponseCode(400)
-
-  //     expect(result).toBeFalsy()
   //   })
   // })
 })
