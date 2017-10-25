@@ -225,7 +225,7 @@ image.contentType | The content type of the image being uploaded
 callback?  | This is optional if following the callback approach. Callback parameters are error and data (error, data) => {}
 
 ```
-  Ingest.Videos.uploadThumbnail(id, image, function(error, result) {
+  Ingest.Videos.uploadThumbnail(id, image, function(error, data) {
     if(error) {
       return res.send(error)
     }
