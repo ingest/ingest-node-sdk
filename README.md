@@ -215,15 +215,14 @@ Ingest.Videos.addExternalThumbnails(id, images, (error, data) => {
 
 ### Uploading a thumbnail to a Video
 
-```
-Parameter   |         Description
----------           | -----------
-id                  | The id of the video you wish to add thumbnails for
-image               | Object containing all of the image information
-image.data          | The image buffer
-image.filename      | The name of the image file
-image.contentType   | The content type of the image being uploaded
-callback?           | This is optional if following the callback approach. Callback parameters are error and data (error, data) => {}
+Parameter   | Description
+---------  | -----------
+id         | The id of the video you wish to add thumbnails for
+image      | Object containing all of the image information
+image.data | The image buffer
+image.filename | The name of the image file
+image.contentType | The content type of the image being uploaded
+callback?  | This is optional if following the callback approach. Callback parameters are error and data (error, data) => {}
 
 ```
   Ingest.Videos.uploadThumbnail(id, image, function(error, result) {
