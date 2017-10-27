@@ -43,7 +43,7 @@ npm install @ingest/ingest-node-sdk
 
 2. Require it in your project:
 ```javascript
-  const IngestSDK = require('ingest-node-sdk')
+  const IngestSDK = require('@ingest/ingest-node-sdk')
 ```
 
 3. Initialize the SDK:
