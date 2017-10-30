@@ -64,17 +64,9 @@ describe('Livestreams Tests', () => {
     })
   })
 
-  describe('Livestreams:: delete', () => {
-    it('Should call send request if id, end and callback are all valid', () => {
-      this.resource.delete('id', true, (err, res) => {
-        expect(res).toBeDefined()
-        expect(err).toBeNull()
-        expect(this.resource._sendRequest).toHaveBeenCalled()
-      })
-    })
-
-    it('Should call send request if end param is false', () => {
-      this.resource.delete('id', false, (err, res) => {
+  describe('Livestreams:: end', () => {
+    it('Should call send request if id, streamKey and callback are all valid', () => {
+      this.resource.end('id', 'streamkey', (err, res) => {
         expect(res).toBeDefined()
         expect(err).toBeNull()
         expect(this.resource._sendRequest).toHaveBeenCalled()
@@ -82,7 +74,15 @@ describe('Livestreams Tests', () => {
     })
 
     it('Should call handleInputError if id is not a string', () => {
-      this.resource.delete({}, false, (err, res) => {
+      this.resource.end({}, 'streamkey', (err, res) => {
+        expect(err).toBeDefined()
+        expect(res).toBeNull()
+        expect(this.resource._handleInputError).toHaveBeenCalled()
+      })
+    })
+
+    it('Should call handleInputError if streamkey is not a string', () => {
+      this.resource.end('id', {}, (err, res) => {
         expect(err).toBeDefined()
         expect(res).toBeNull()
         expect(this.resource._handleInputError).toHaveBeenCalled()
