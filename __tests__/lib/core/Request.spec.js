@@ -10,25 +10,11 @@ const Utils = require('../../../lib/core/Utils')
 describe('Request Tests', () => {
   describe('Request::constructor', () => {
     it('Should return an error message if options are not passed in', function () {
-      const myRequest = new Request()
-
-      myRequest.request.then((response) => {
-        expect(response).not.toBeDefined()
-      }).catch((err) => {
-        expect(err).toBeDefined()
-        expect(err.message).toMatch(/IngestAPI Request options are required/)
+      const myRequest = new Request(null, function (error) {
+        expect(error.message).toBe('IngestAPI Request options are required')
       })
-    })
 
-    it('Should return an error message if options are not an object', function () {
-      const myRequest = new Request()
-
-      myRequest.request.then((response) => {
-        expect(response).not.toBeDefined()
-      }).catch((err) => {
-        expect(err).toBeDefined()
-        expect(err.message).toMatch(/IngestAPI Request options are required/)
-      })
+      expect(myRequest).toBeInstanceOf(Request)
     })
 
     it('Should return an error message if a url is not passed in the options', function () {
@@ -36,14 +22,11 @@ describe('Request Tests', () => {
         token: 'test'
       }
 
-      const myRequest = new Request(options)
-
-      myRequest.request.then((response) => {
-        expect(response).not.toBeDefined()
-      }).catch((err) => {
-        expect(err).toBeDefined()
-        expect(err.message).toMatch(/IngestAPI Request options requires a url to make the request/)
+      const myRequest = new Request(options, function (error) {
+        expect(error.message).toBe('IngestAPI Request options requires a url to make the request')
       })
+
+      expect(myRequest).toBeInstanceOf(Request)
     })
 
     it('Should return an error message if a token is not set', function () {
@@ -55,14 +38,11 @@ describe('Request Tests', () => {
         url: 'someUrl'
       }
 
-      const myRequest = new Request(options)
-
-      myRequest.request.then((response) => {
-        expect(response).not.toBeDefined()
-      }).catch((err) => {
-        expect(err).toBeDefined()
-        expect(err.message).toMatch(/IngestSDK requires a token to be set prior to use/)
+      const myRequest = new Request(options, function (error) {
+        expect(error.message).toBe('IngestSDK requires a token to be set prior to use')
       })
+
+      expect(myRequest).toBeInstanceOf(Request)
     })
 
     it('Should return an error message if a token is not valid', function () {
@@ -78,14 +58,11 @@ describe('Request Tests', () => {
         url: 'someUrl'
       }
 
-      const myRequest = new Request(options)
-
-      myRequest.request.then((response) => {
-        expect(response).not.toBeDefined()
-      }).catch((err) => {
-        expect(err).toBeDefined()
-        expect(err.message).toMatch(/IngestAPI Request options requires a valid token/)
+      const myRequest = new Request(options, function (error) {
+        expect(error.message).toBe('IngestAPI Request options requires a valid token')
       })
+
+      expect(myRequest).toBeInstanceOf(Request)
     })
 
     it('Should return call makeRequest if all params are valid', function () {
@@ -104,11 +81,11 @@ describe('Request Tests', () => {
           value: 'somevalue'
         }
       }
+      const myRequest = new Request(options, function (error) {
+        expect(error.message).toBeUndefined()
+      })
 
-      const myRequest = new Request(options)
-
-      expect(myRequest.request).toBeDefined()
-      expect(myRequest.cancel).toBeDefined()
+      expect(myRequest).toBeInstanceOf(Request)
     })
   })
 
@@ -124,15 +101,22 @@ describe('Request Tests', () => {
 
       this.myRequest = new Request({
         url: 'someurl'
+      }, () => {
+        return true
       })
     })
 
     describe('Request::handleError', () => {
-      it('Should return a rejected Promise', () => {
+      it('Should callback with error message', () => {
         const errorMessage = 'someerror'
-        const result = Request.prototype.handleError(errorMessage)
+        const errorCB = jest.fn()
 
-        expect(result.request).toBeDefined()
+        Request.prototype.handleError(errorMessage, errorCB)
+
+        expect(errorCB).toBeCalledWith(
+          {'headers': {}, 'message': 'someerror', 'statusCode': 400},
+          null
+        )
       })
     })
 
@@ -164,22 +148,25 @@ describe('Request Tests', () => {
     })
 
     describe('Request::requestComplete', () => {
-      let reject, resolve
-
       beforeEach(() => {
-        reject = jest.fn()
-        resolve = jest.fn()
-
         jest.spyOn(Request.prototype, 'isValidResponseCode')
         jest.spyOn(Request.prototype, 'processResponse')
       })
 
-      it('Should call reject if an error is present', () => {
-        Request.prototype.requestComplete(reject, resolve, 'someerror')
-        expect(reject).toHaveBeenCalledWith('someerror')
+      it('Should call callback with error if error is present', () => {
+        const callback = jest.fn()
+        const error = new Error('error')
+
+        Request.prototype.requestComplete(callback, error, { statusCode: 500 }, null)
+
+        expect(callback).toBeCalledWith(
+          error,
+          null
+        )
       })
 
       it('Should reject if an invalid response code is thrown', () => {
+        const callback = jest.fn()
         const response = {
           statusMessage: 'StatusMessage',
           statusCode: 400,
@@ -188,9 +175,9 @@ describe('Request Tests', () => {
           }
         }
 
-        Request.prototype.requestComplete(reject, resolve, null, response, {})
+        Request.prototype.requestComplete(callback, null, response, {})
 
-        expect(reject).toHaveBeenCalledWith({
+        expect(callback).toHaveBeenCalledWith(null, {
           statusMessage: 'StatusMessage',
           statusCode: 400,
           headers: {
@@ -200,7 +187,8 @@ describe('Request Tests', () => {
         })
       })
 
-      it('Should resovle if everything is ok', () => {
+      it('Should return a successful callback if everything is ok', () => {
+        const callback = jest.fn()
         const response = {
           statusMessage: 'StatusMessage',
           statusCode: 200,
@@ -209,9 +197,9 @@ describe('Request Tests', () => {
           }
         }
 
-        Request.prototype.requestComplete(reject, resolve, null, response, {})
+        Request.prototype.requestComplete(callback, null, response, {})
 
-        expect(resolve).toHaveBeenCalledWith({
+        expect(callback).toHaveBeenCalledWith(null, {
           data: {},
           headers: {
             someheader: 'someheader'
